@@ -2,6 +2,8 @@ import { isValidObjectId } from 'mongoose';
 import User from '../Domains/User.domain';
 import IUser from '../Interfaces/User.interfaces';
 import UserODM from '../Database/Models/User.model';
+import bcrypt from 'bcryptjs';
+import { createToken } from '../Auth/jwt.auth';
 
 const INVALID_ERROR = 'Invalid mongo id';
 const NOT_FOUND_ERROR = 'User not found';
@@ -13,9 +15,28 @@ export default class UserService {
     this.userODM = odm;
   }
 
-  public async create(user: IUser): Promise<User> {
-    const createdUser = await this.userODM.create(user);
-    return new User(createdUser);
+  public async create(user: IUser): Promise<string> {
+    const { password } = user;
+    const encriptedPassword = await bcrypt.hash(password, 10);
+
+    const createdUser = await this.userODM.create({ ...user, password: encriptedPassword });
+    const newUser = {...new User(createdUser), password: undefined};
+    const token = createToken(newUser);
+    return token;
+  }
+
+  public async login(email: string, password: string): Promise<string> {
+    const user = await this.userODM.findOne({ email });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      throw new Error('Invalid password');
+    }
+    const newUser = {...new User(user), password: undefined};
+    const token = createToken(newUser);
+    return token;
   }
 
   public async getAll(): Promise<User[]> {

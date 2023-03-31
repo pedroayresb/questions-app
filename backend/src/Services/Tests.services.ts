@@ -69,8 +69,48 @@ export default class TestService {
     if (!question) {
       throw new Error(INVALID_QUESTION_ERROR);
     }
+    const questionWithNumber = {
+      ...question,
+      number: test.questions.length + 1,
+    };
     const updatedTest = await this.testODM.updateById(testId, {
-      questions: [...test.questions, question],
+      questions: [...test.questions, questionWithNumber],
+    }) as ITest;
+    return new Test(updatedTest);
+  }
+
+  public async updateQuestionInTest(
+    testId: string,
+    question: IQuestion
+  ): Promise<Test> {
+    const test = await this.findById(testId);
+    if (!test) {
+      throw new Error(NOT_FOUND_ERROR);
+    }
+    if (!question) {
+      throw new Error(INVALID_QUESTION_ERROR);
+    }
+    const updatedTest = await this.testODM.updateById(testId, {
+      questions: test.questions.map((q) =>
+        q.number === question.number ? question : q
+      ),
+    }) as ITest;
+    return new Test(updatedTest);
+  }
+
+  public async deleteQuestionFromTest(
+    testId: string,
+    question: number
+  ): Promise<Test> {
+    const test = await this.findById(testId);
+    if (!test) {
+      throw new Error(NOT_FOUND_ERROR);
+    }
+    if (!question) {
+      throw new Error(INVALID_QUESTION_ERROR);
+    }
+    const updatedTest = await this.testODM.updateById(testId, {
+      questions: test.questions.filter((q) => q.number !== question),
     }) as ITest;
     return new Test(updatedTest);
   }
