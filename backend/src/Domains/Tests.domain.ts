@@ -11,6 +11,11 @@ export default class Test implements ITest {
   constructor({ id, name, questions }: ITest) {
     this.id = id;
     this.name = name;
+    questions.map((question) => {
+        Object.keys(question.answers).forEach((key) => {
+        question.answers[key].correct = false;
+      });
+    });
     this.questions = questions;
   }
 }

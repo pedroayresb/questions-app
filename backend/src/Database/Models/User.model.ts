@@ -21,6 +21,10 @@ class UserODM extends AbstractODM<IUser> {
         type: [String],
         required: true,
       },
+      role: {
+        type: String,
+        required: true,
+      },
     });
 
     super(schema, 'User');

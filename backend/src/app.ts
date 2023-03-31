@@ -1,6 +1,7 @@
 import express from 'express';
 import UserRouter from './Routes/User.router';
 import TestRouter from './Routes/Tests.router';
+import CorrectionRouter from './Routes/Correction.router';
 import ErrorHandler from './Middlewares/ErrorHandler.middleware';
 
 class App {
@@ -14,6 +15,7 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
     this.app.use('/user', UserRouter);
     this.app.use('/test', TestRouter);
+    this.app.use('/correction', CorrectionRouter);
     this.app.use(ErrorHandler.handle);
   }
 
