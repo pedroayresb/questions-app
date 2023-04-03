@@ -7,7 +7,7 @@ O Questions App é um aplicativo de simulados para concurso ou vestibulares, no 
 
 O Questions App é desenvolvido usando as seguintes tecnologias:
 
-Docker
+- Docker
 
 *Backend*:
 - TypeScript
