@@ -7,8 +7,15 @@ class ErrorHandler {
     res: Response,
     next: NextFunction,
   ) {
+    console.log(error);
     switch (error.message) {
       case ("Invalid mongo id"):
+        res.status(400).json({ message: error.message });
+        break;
+      case ("User already exists"):
+        res.status(409).json({ message: error.message });
+        break;
+      case ("Invalid role"):
         res.status(400).json({ message: error.message });
         break;
       case ("User not found"):

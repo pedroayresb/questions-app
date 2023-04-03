@@ -10,6 +10,8 @@ export default class User implements IUser {
 
   password: string;
 
+  role: string;
+
   tests_made: ITestsMade[];
 
   constructor({
@@ -17,12 +19,14 @@ export default class User implements IUser {
     name,
     email,
     password,
+    role,
     tests_made,
   }: IUser) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.password = password;
+    this.role = role;
     this.tests_made = tests_made;
   }
 }

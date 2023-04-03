@@ -13,6 +13,7 @@ class UserODM extends AbstractODM<IUser> {
       email: {
         type: String,
         required: true,
+        unique: true,
       },
       password: {
         type: String,

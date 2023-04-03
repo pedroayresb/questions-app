@@ -28,7 +28,7 @@ services:
       database:
           condition: service_healthy
     environment:
-      MONGO_URI: mongodb://database:27017/notes
+      MONGO_URI: mongodb://root:root@database
     build:
       context: ./backend
       dockerfile: Dockerfile

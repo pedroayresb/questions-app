@@ -19,7 +19,7 @@ export default class UserController {
     try {
       const { body } = this.req;
       const user = await this.userService.create(body as IUser);
-      this.res.status(201).json(user);
+      this.res.status(201).json({ token: user });
     } catch (error) {
       this.next(error);
     }
@@ -29,7 +29,7 @@ export default class UserController {
     try {
       const { email, password } = this.req.body;
       const user = await this.userService.login(email, password);
-      this.res.status(200).json(user);
+      this.res.status(200).json({ token: user });
     } catch (error) {
       this.next(error);
     }
@@ -75,7 +75,7 @@ export default class UserController {
 
   public async deleteById(): Promise<void> {
     const { locals: { user } } = this.res;
-    if (user.role !== 'admin' || user._id !== this.req.params.id) {
+    if (user.role !== 'admin') {
       this.res.status(403).json({ message: 'Forbidden' });
     }
     try {

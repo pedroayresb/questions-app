@@ -2,17 +2,18 @@ import { Router } from 'express';
 import UserController from '../Controllers/User.controller';
 import UserFactory from '../Factory/User.factory';
 import validateToken from '../Validation/tokenValidation';
+import { validateLoginUser, validateRegisterUser } from '../Validation/userValidation';
 
 const router = Router();
 
 const userFactory = UserFactory.create();
 
 router
-  .post('/register', async (req, res, next) => {
+  .post('/register', validateRegisterUser, async (req, res, next) => {
     const userController = new UserController(req, res, next, userFactory);
     await userController.create();
   })
-  .post('/login', async (req, res, next) => {
+  .post('/login', validateLoginUser, async (req, res, next) => {
     const userController = new UserController(req, res, next, userFactory);
     await userController.login();
   })

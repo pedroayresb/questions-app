@@ -2,7 +2,7 @@ import { isValidObjectId } from 'mongoose';
 import User from '../Domains/User.domain';
 import IUser from '../Interfaces/User.interfaces';
 import UserODM from '../Database/Models/User.model';
-import bcrypt from 'bcryptjs';
+import CryptoJS from 'crypto-js';
 import { createToken } from '../Auth/jwt.auth';
 
 const INVALID_ERROR = 'Invalid mongo id';
@@ -16,9 +16,14 @@ export default class UserService {
   }
 
   public async create(user: IUser): Promise<string> {
+    const { email } = user;
+    const hasUser = await this.userODM.findOne({ email });
+    if (hasUser) {
+      throw new Error('User already exists');
+    }
     const { password } = user;
-    const encriptedPassword = await bcrypt.hash(password, 10);
-    const createdUser = await this.userODM.create({ ...user, password: encriptedPassword, tests_made: [] });
+    const encryptedPassword = CryptoJS.SHA256(password).toString();
+    const createdUser = await this.userODM.create({ ...user, password: encryptedPassword, tests_made: [] });
     const newUser = {...new User(createdUser), password: undefined};
     const token = createToken(newUser);
     return token;
@@ -29,8 +34,8 @@ export default class UserService {
     if (!user) {
       throw new Error('User not found');
     }
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
+    const encryptedPassword = CryptoJS.SHA256(password).toString();
+    if (user.password !== encryptedPassword) {
       throw new Error('Invalid password');
     }
     const newUser = {...new User(user), password: undefined};
