@@ -33,10 +33,10 @@ abstract class AbstractODM<T> {
   }
 
   public async updateById(id: string, data: Partial<T>): Promise<T | null> {
-    const updateVehicle = this.model.findByIdAndUpdate(id, data, {
+    const updated = this.model.findByIdAndUpdate(id, data, {
       new: true,
     });
-    return updateVehicle;
+    return updated;
   }
 
   public async deleteById(id: string): Promise<T | null> {

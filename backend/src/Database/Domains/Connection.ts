@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const MONGO_DB_URL = 'mongodb://localhost:27017/questions-app';
 

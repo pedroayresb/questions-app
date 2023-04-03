@@ -86,18 +86,4 @@ export default class UserController {
       this.next(error);
     }
   }
-
-  public async addTestToUser(): Promise<void> {
-    const { locals: { user } } = this.res;
-    if (user.role !== 'admin' || user._id !== this.req.params.id) {
-      this.res.status(403).json({ message: 'Forbidden' });
-    }
-    try {
-      const { userId, testId } = this.req.params;
-      const user = await this.userService.addTestToUser(userId, testId);
-      this.res.status(200).json(user);
-    } catch (error) {
-      this.next(error);
-    }
-  }
 }

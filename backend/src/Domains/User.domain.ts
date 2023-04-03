@@ -1,4 +1,5 @@
 import IUser from '../Interfaces/User.interfaces';
+import ITestsMade from '../Interfaces/TestsMade.interfaces';
 
 export default class User implements IUser {
   id: string;
@@ -9,7 +10,7 @@ export default class User implements IUser {
 
   password: string;
 
-  tests_made: string[];
+  tests_made: ITestsMade[];
 
   constructor({
     id,

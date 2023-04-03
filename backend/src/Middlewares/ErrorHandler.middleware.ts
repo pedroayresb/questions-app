@@ -30,6 +30,7 @@ class ErrorHandler {
         res.status(400).json({ message: error.message });
         break;
       default:
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
     return

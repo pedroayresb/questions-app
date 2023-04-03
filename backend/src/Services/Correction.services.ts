@@ -46,14 +46,24 @@ export default class CorrectionService {
       if (correctAnswer === answerGiven) {
         correct.push(question);
       } else {
+        const newQuestion = {
+          ...question,
+          answerGiven: answerGiven,
+        }
         incorrect.push(question);
       }
     })
     const correction = {
       correct,
       incorrect,
-      testId,
+      id: testId,
     }
+    const newTestsMade = [...user.tests_made, correction];
+    const newUser = {
+      ...user,
+      tests_made: newTestsMade,
+    }
+    await this.userODM.updateById(userId, newUser);
     return correction;
   }
 }

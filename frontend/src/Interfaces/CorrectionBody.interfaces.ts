@@ -5,5 +5,3 @@ interface ICorrectionBody {
   questionsGiven: ICorrectionQuestion[];
   userId: string;
 }
-
-export default ICorrectionBody;

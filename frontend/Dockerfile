@@ -1,6 +1,6 @@
 FROM node:16.14
 
-EXPOSE 3001
+EXPOSE 5173
 
 WORKDIR /app
 

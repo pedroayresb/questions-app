@@ -8,7 +8,7 @@ const router = Router();
 const userFactory = UserFactory.create();
 
 router
-  .post('/', async (req, res, next) => {
+  .post('/register', async (req, res, next) => {
     const userController = new UserController(req, res, next, userFactory);
     await userController.create();
   })
@@ -31,10 +31,6 @@ router
   .delete('/:id', validateToken, async (req, res, next) => {
     const userController = new UserController(req, res, next, userFactory);
     await userController.deleteById();
-  })
-  .put('/test', validateToken, async (req, res, next) => {
-    const userController = new UserController(req, res, next, userFactory);
-    await userController.addTestToUser();
   });
 
 export default router;

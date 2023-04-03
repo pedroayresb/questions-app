@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import ITestsMade from '../../Interfaces/TestsMade.interfaces';
 import IUser from '../../Interfaces/User.interfaces';
 import AbstractODM from '../Repositories/AbstractODM';
 
@@ -18,7 +19,7 @@ class UserODM extends AbstractODM<IUser> {
         required: true,
       },
       tests_made: {
-        type: [String],
+        type: Object as unknown as ITestsMade[],
         required: true,
       },
       role: {

@@ -9,9 +9,6 @@ services:
       - 27017:27017
     volumes:
       - ./data:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 30s
@@ -26,14 +23,30 @@ services:
     volumes:
       - ./backend:/app
     working_dir: /app
-    command: npm start
+    command: npm run dev
     depends_on:
       database:
           condition: service_healthy
     environment:
-      MONGO_URI: mongodb://root:root@database:27017
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      MONGO_URI: mongodb://database:27017/notes
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+  frontend:
+    image: node:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - 5173:5173
+    volumes:
+      - ./frontend:/app
+    working_dir: /app
+    command: npm run dev
+    environment:
+      - BASE_URL=http://localhost:3000
+      - VUE_APP_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile

@@ -2,7 +2,9 @@ import express from 'express';
 import UserRouter from './Routes/User.router';
 import TestRouter from './Routes/Tests.router';
 import CorrectionRouter from './Routes/Correction.router';
+import validateToken from './Validation/tokenValidation';
 import ErrorHandler from './Middlewares/ErrorHandler.middleware';
+import cors from 'cors';
 
 class App {
   public app: express.Express;
@@ -12,10 +14,20 @@ class App {
 
     this.config();
 
+    this.app.use(cors({
+      origin: 'http://localhost:5173',
+      credentials: true,
+    }));
+
     this.app.get('/', (req, res) => res.json({ ok: true }));
     this.app.use('/user', UserRouter);
     this.app.use('/test', TestRouter);
     this.app.use('/correction', CorrectionRouter);
+    this.app.post('/token', validateToken, (_req, res) => {
+      const { user } = res.locals;
+      delete user.password;
+      return res.status(202).json(user);
+    });
     this.app.use(ErrorHandler.handle);
   }
 

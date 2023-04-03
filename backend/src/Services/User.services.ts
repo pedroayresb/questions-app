@@ -18,8 +18,7 @@ export default class UserService {
   public async create(user: IUser): Promise<string> {
     const { password } = user;
     const encriptedPassword = await bcrypt.hash(password, 10);
-
-    const createdUser = await this.userODM.create({ ...user, password: encriptedPassword });
+    const createdUser = await this.userODM.create({ ...user, password: encriptedPassword, tests_made: [] });
     const newUser = {...new User(createdUser), password: undefined};
     const token = createToken(newUser);
     return token;
@@ -75,11 +74,5 @@ export default class UserService {
       throw new Error(NOT_FOUND_ERROR);
     }
     return new User(deletedUser);
-  }
-
-  public async addTestToUser(userId: string, testId: string): Promise<User> {
-    const user = await this.findById(userId);
-    user.tests_made.push(testId);
-    return this.updateById(userId, user);
   }
 }
