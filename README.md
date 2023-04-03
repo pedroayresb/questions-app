@@ -10,23 +10,23 @@ O Questions App é desenvolvido usando as seguintes tecnologias:
 Docker
 
 *Backend*:
-	- TypeScript
-	- JWT
-	- Mongo
-	- Mongoose
-	- Express
-	- Cors
-	- CryptoJS
-	- EsLint
+- TypeScript
+- JWT
+- Mongo
+- Mongoose
+- Express
+- Cors
+- CryptoJS
+- EsLint
 
 *Frontend*:
-	- Vite
-	- Typescript
-	- Vue
-	- Vue Router
-	- axios
-	- Tailwind
-	- EsLint
+- Vite
+- Typescript
+- Vue
+- Vue Router
+- axios
+- Tailwind
+- EsLint
 
 ## Características
 
